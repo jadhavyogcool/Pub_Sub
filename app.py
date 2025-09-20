@@ -6,9 +6,9 @@ app = Flask(__name__)
 
 # Redis Cloud connection
 redis_client = redis.StrictRedis(
-    host="redis-17479.c84.us-east-1-2.ec2.redns.redis-cloud.com",   # e.g. redis-12345.c123.us-east-1-3.ec2.cloud.redislabs.com
+    host="",   # e.g. redis-12345.c123.us-east-1-3.ec2.cloud.redislabs.com
     port=17479,           # e.g. 12345
-    password="X5b97hVmeTvNGerdwJY65xUVitPjCNjN", # from Redis Cloud
+    password="", # from Redis Cloud
     decode_responses=True
 )
 
@@ -46,3 +46,4 @@ def clear_messages():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
