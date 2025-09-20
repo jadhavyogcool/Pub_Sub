@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flask + Redis Pub/Sub</title>
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById("msgInput").value;
+      const res = await fetch("/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+      document.getElementById("msgInput").value = "";
+      loadMessages();
+    }
+
+    async function loadMessages() {
+      const res = await fetch("/messages");
+      const data = await res.json();
+      const list = document.getElementById("messages");
+      list.innerHTML = "";
+      data.forEach(m => {
+        const li = document.createElement("li");
+        li.textContent = m;
+        list.appendChild(li);
+      });
+    }
+
+    async function clearMessages() {
+      await fetch("/clear", { method: "POST" });
+      loadMessages();
+    }
+
+    // Auto-refresh every 2s
+    setInterval(loadMessages, 2000);
+    window.onload = loadMessages;
+  </script>
+</head>
+<body style="font-family: Arial; margin: 20px;">
+  <h2>📢 Flask + Redis Pub/Sub</h2>
+  
+  <input id="msgInput" placeholder="Enter message" style="padding:5px;">
+  <button onclick="sendMessage()">Publish</button>
+  <button onclick="clearMessages()">Clear All</button>
+  
+  <h3>Messages:</h3>
+  <ul id="messages"></ul>
+</body>
+</html>
